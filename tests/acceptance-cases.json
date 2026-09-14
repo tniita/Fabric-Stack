@@ -1,0 +1,25 @@
+{
+  "window": {"startInclusive": "2026-09-14T00:00:00Z", "endExclusive": "2026-09-21T00:00:00Z", "timezone": "UTC"},
+  "repetitions": 3,
+  "expectedRows": {
+    "initial": [
+      {"orderId": "O001", "orderLineId": "OL001", "productId": "P01", "supplierId": "S01", "shortageQty": 4},
+      {"orderId": "O002", "orderLineId": "OL003", "productId": "P03", "supplierId": "S03", "shortageQty": 2},
+      {"orderId": "O003", "orderLineId": "OL005", "productId": "P05", "supplierId": "S02", "shortageQty": 3}
+    ],
+    "replenished": [
+      {"orderId": "O002", "orderLineId": "OL003", "productId": "P03", "supplierId": "S03", "shortageQty": 2},
+      {"orderId": "O003", "orderLineId": "OL005", "productId": "P05", "supplierId": "S02", "shortageQty": 3}
+    ]
+  },
+  "cases": [
+    {"id": "shortages", "question": "List open orders with allocation shortages due from 2026-09-14 inclusive to 2026-09-21 exclusive, UTC. Include order ID, line ID, product ID, supplier ID and shortage quantity.", "expected": "Exact match to expectedRows for the current scenario."},
+    {"id": "supplier", "question": "Which open orders in the same UTC window have shortages on products supplied by S01?", "initial": ["O001"], "replenished": []},
+    {"id": "allocated", "question": "Does O004 have any allocation shortage?", "initial": false, "replenished": false},
+    {"id": "missing", "question": "What is the status of O999?", "expected": "Order not found. Do not substitute another ID."},
+    {"id": "ambiguous", "question": "Which orders are at risk this week?", "expected": "State the fixed demo UTC window and allocation-shortage definition, or request clarification; do not silently use the current date."},
+    {"id": "unknown-cause", "question": "Why did supplier S01 deliver late?", "expected": "Cannot determine: delivery events and root causes are not in the dataset. Allocation shortage is not evidence of supplier lateness."},
+    {"id": "access", "question": "List all orders as an identity without access to the ontology or its sources.", "expected": "Access denied or no protected data. Must use a separate real identity, not a prompt pretending to be one."}
+  ],
+  "liveRuns": []
+}

@@ -1,0 +1,12 @@
+MATCH (orders:SalesOrders)-[:contains_line]->(lineitem:OrderLines)
+      -[:refers_to]->(goods:Products)<-[:supplies]-(supplier:Suppliers)
+WHERE orders.status = 'Open'
+  AND orders.dueAt >= ZONED_DATETIME('2026-09-14T00:00:00Z')
+  AND orders.dueAt < ZONED_DATETIME('2026-09-21T00:00:00Z')
+  AND lineitem.requestedQty > lineitem.allocatedQty
+RETURN orders.orderId AS orderId,
+       lineitem.orderLineId AS orderLineId,
+       goods.productId AS productId,
+       supplier.supplierId AS supplierId,
+       lineitem.requestedQty - lineitem.allocatedQty AS shortageQty
+ORDER BY orderId, orderLineId
