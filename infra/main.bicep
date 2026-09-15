@@ -17,7 +17,7 @@ var tags = {
   owner: capacityAdmin
 }
 
-resource capacityGroup 'Microsoft.Resources/resourceGroups@2024-03-01' = {
+resource capacityGroup 'Microsoft.Resources/resourceGroups@2024-07-01' = {
   name: resourceGroupName
   location: resourceGroupLocation
   tags: tags
